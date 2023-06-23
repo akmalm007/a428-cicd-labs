@@ -1,15 +1,10 @@
 node {
-    checkout scm
-        docker.image('node:16-buster-slim').withRun('-p 3000:3000') {
+    docker.image('node:16-buster').withRun('-p 3200:3200') { container ->
         stage('Build') {
-            sh 'npm install'
+            sh "docker exec ${container.id} npm install"
         }
         stage('Test') {
-            sh './jenkins/scripts/test.sh'
+            sh "docker exec ${container.id} ./jenkins/scripts/test.sh"
         }
     }
 }
-   
-
-
-
