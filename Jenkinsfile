@@ -1,13 +1,11 @@
 node {
-    docker.image('node:16-buster-slim').inside('-p 3200:3200') {
-        triggers {
-            pollSCM('*/2 * * * *')
-        }   
-
-        stage('Build') {
+    stage('Build') {
+        docker.image('node:16-buster-slim').withRun('-p 3200:3200') {
             sh 'npm install'
         }
-        stage('Test') {
+    }
+    stage('Test') {
+        docker.image('node:16-buster-slim').withRun('-p 3200:3200') {
             sh './jenkins/scripts/test.sh'
         }
     }
